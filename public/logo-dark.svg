@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 40" fill="none">
+  <defs>
+    <linearGradient id="gold-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#C6A667"/>
+      <stop offset="100%" stop-color="#d4bc8a"/>
+    </linearGradient>
+  </defs>
+  <!-- HOUSEWISE as one word - no gap -->
+  <text x="0" y="32" font-family="'Times New Roman', Times, Georgia, serif" font-size="36" font-weight="400" letter-spacing="0.02em">
+    <tspan fill="#0A1A33">HOUSE</tspan><tspan fill="url(#gold-grad)">WISE</tspan>
+  </text>
+</svg>

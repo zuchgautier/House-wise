@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 60" fill="none">
+  <defs>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#C6A667"/>
+      <stop offset="100%" stop-color="#d4bc8a"/>
+    </linearGradient>
+  </defs>
+  <!-- Roof - chevron shape -->
+  <path d="M24 3 L6 21" stroke="url(#gold)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path d="M24 3 L42 21" stroke="url(#gold)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Left pillar (leg of H) -->
+  <path d="M6 21 L6 57" stroke="url(#gold)" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <!-- Right pillar (leg of H) -->
+  <path d="M42 21 L42 57" stroke="url(#gold)" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <!-- Horizontal bar of H -->
+  <path d="M6 36 L42 36" stroke="url(#gold)" stroke-width="3" stroke-linecap="round" fill="none"/>
+</svg>
