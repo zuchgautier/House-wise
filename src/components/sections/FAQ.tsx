@@ -4,10 +4,11 @@ import { memo, useState, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import { ChevronDown, HelpCircle } from "lucide-react";
 import {
-    staggerContainer,
+    staggerFast,
     fadeInUp,
+    cardReveal,
     viewportOnce,
-    LUXURY_EASE,
+    EASE_OUT_EXPO,
 } from "@/lib/animations";
 
 const faqs = [
@@ -41,8 +42,11 @@ export const FAQ = memo(function FAQ() {
     }, []);
 
     return (
-        <section id="faq" className="section-light section-spacing pt-10">
-            <div className="section-container">
+        <section id="faq" className="section-light section-spacing pt-10 relative">
+            {/* Ambient decoration */}
+            <div className="ambient-orb w-64 h-64 top-20 right-10 opacity-15" />
+
+            <div className="section-container relative z-10">
                 {/* Header */}
                 <motion.div
                     className="text-center mb-10"
@@ -63,7 +67,7 @@ export const FAQ = memo(function FAQ() {
                 {/* FAQ Items */}
                 <motion.div
                     className="max-w-3xl mx-auto space-y-4"
-                    variants={staggerContainer}
+                    variants={staggerFast}
                     initial="hidden"
                     whileInView="visible"
                     viewport={viewportOnce}
@@ -72,7 +76,7 @@ export const FAQ = memo(function FAQ() {
                         <motion.div
                             key={index}
                             className="glass-card overflow-hidden"
-                            variants={fadeInUp}
+                            variants={cardReveal}
                         >
                             <button
                                 onClick={() => toggle(index)}
@@ -83,7 +87,7 @@ export const FAQ = memo(function FAQ() {
                                 </span>
                                 <motion.div
                                     animate={{ rotate: open === index ? 180 : 0 }}
-                                    transition={{ duration: 0.3, ease: LUXURY_EASE }}
+                                    transition={{ duration: 0.4, ease: EASE_OUT_EXPO }}
                                     className="flex-shrink-0"
                                 >
                                     <ChevronDown className="w-5 h-5 text-dore" />

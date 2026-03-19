@@ -3,9 +3,11 @@
 import { memo, useRef, useEffect, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import {
-    staggerContainer,
+    staggerFast,
+    scaleReveal,
     fadeInUp,
     viewportOnce,
+    EASE_OUT_EXPO,
 } from "@/lib/animations";
 
 const stats = [
@@ -38,7 +40,9 @@ const AnimatedCounter = memo(function AnimatedCounter({
                 (timestamp - startTime) / (duration * 1000),
                 1
             );
-            setCount((1 - Math.pow(1 - progress, 4)) * value);
+            // Custom easing: exponential ease-out for snappy feel
+            const eased = 1 - Math.pow(1 - progress, 5);
+            setCount(eased * value);
             if (progress < 1) animationFrame = requestAnimationFrame(animate);
         };
         animationFrame = requestAnimationFrame(animate);
@@ -88,16 +92,22 @@ export const Stats = memo(function Stats() {
                 {/* Stats Grid */}
                 <motion.div
                     className="grid grid-cols-2 lg:grid-cols-4 gap-6"
-                    variants={staggerContainer}
+                    variants={staggerFast}
                     initial="hidden"
                     whileInView="visible"
                     viewport={viewportOnce}
                 >
-                    {stats.map((stat) => (
+                    {stats.map((stat, i) => (
                         <motion.div
                             key={stat.label}
                             className="bg-blanc/95 rounded-3xl p-8 text-center shadow-lg gpu-layer"
-                            variants={fadeInUp}
+                            variants={scaleReveal}
+                            whileHover={{
+                                scale: 1.04,
+                                y: -4,
+                                transition: { duration: 0.3, ease: EASE_OUT_EXPO },
+                            }}
+                            custom={i}
                         >
                             <div className="stat-number text-gradient mb-2">
                                 <AnimatedCounter value={stat.value} suffix={stat.suffix} />

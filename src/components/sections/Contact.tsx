@@ -16,10 +16,11 @@ import {
     fadeInUp,
     fadeInLeft,
     fadeInRight,
-    staggerContainer,
+    staggerFast,
     viewportOnce,
-    SPRING_HOVER,
-    LUXURY_EASE,
+    SPRING_BOUNCY,
+    EASE_OUT_EXPO,
+    scaleIn,
 } from "@/lib/animations";
 
 export const Contact = memo(function Contact() {
@@ -73,14 +74,17 @@ export const Contact = memo(function Contact() {
     );
 
     const inputClasses =
-        "w-full px-5 py-4 rounded-2xl bg-blanc border border-noir/10 focus:border-dore focus:ring-2 focus:ring-dore/20 transition-colors duration-300 text-noir placeholder:text-bleu-nuit/50 font-light shadow-sm";
+        "w-full px-5 py-4 rounded-2xl bg-blanc border border-noir/10 focus:border-dore focus:ring-2 focus:ring-dore/20 transition-all duration-300 text-noir placeholder:text-bleu-nuit/50 font-light shadow-sm focus:shadow-md focus:translate-y-[-1px]";
 
     return (
         <section
             id="contact"
-            className="section-light section-spacing mb-16 md:mb-24 lg:mb-32"
+            className="section-light section-spacing mb-16 md:mb-24 lg:mb-32 relative"
         >
-            <div className="section-container">
+            {/* Ambient decoration */}
+            <div className="ambient-orb w-80 h-80 -top-40 left-1/3 opacity-15" />
+
+            <div className="section-container relative z-10">
                 <div className="grid lg:grid-cols-2 gap-10 md:gap-16 lg:gap-24 items-center">
                     {/* Left */}
                     <motion.div
@@ -103,7 +107,7 @@ export const Contact = memo(function Contact() {
                         </p>
                         <motion.ul
                             className="space-y-4"
-                            variants={staggerContainer}
+                            variants={staggerFast}
                             initial="hidden"
                             whileInView="visible"
                             viewport={viewportOnce}
@@ -138,13 +142,13 @@ export const Contact = memo(function Contact() {
                                     className="text-center py-8"
                                     initial={{ opacity: 0, scale: 0.9 }}
                                     animate={{ opacity: 1, scale: 1 }}
-                                    transition={{ duration: 0.5, ease: LUXURY_EASE }}
+                                    transition={{ duration: 0.5, ease: EASE_OUT_EXPO }}
                                 >
                                     <motion.div
                                         className="w-16 h-16 rounded-full bg-dore/10 flex items-center justify-center mx-auto mb-6"
-                                        initial={{ scale: 0 }}
-                                        animate={{ scale: 1 }}
-                                        transition={{ type: "spring", delay: 0.1, stiffness: 400, damping: 30 }}
+                                        variants={scaleIn}
+                                        initial="hidden"
+                                        animate="visible"
                                     >
                                         <CheckCircle className="w-8 h-8 text-dore" />
                                     </motion.div>
@@ -227,9 +231,9 @@ export const Contact = memo(function Contact() {
                                     <motion.button
                                         type="submit"
                                         className="btn-gold w-full"
-                                        whileHover={{ scale: 1.02 }}
-                                        whileTap={{ scale: 0.98 }}
-                                        transition={SPRING_HOVER}
+                                        whileHover={{ scale: 1.03, y: -2 }}
+                                        whileTap={{ scale: 0.97 }}
+                                        transition={SPRING_BOUNCY}
                                         disabled={isSubmitting}
                                     >
                                         {isSubmitting ? (

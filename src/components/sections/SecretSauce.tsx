@@ -4,10 +4,11 @@ import { memo } from "react";
 import { motion } from "framer-motion";
 import { TrendingUp, Sparkles, Wrench, BarChart3, Clock, Shield } from "lucide-react";
 import {
-    staggerContainer,
+    staggerFast,
     fadeInUp,
+    cardReveal,
     viewportOnce,
-    SPRING_HOVER,
+    SPRING_BOUNCY,
 } from "@/lib/animations";
 
 const benefits = [
@@ -21,8 +22,11 @@ const benefits = [
 
 export const SecretSauce = memo(function SecretSauce() {
     return (
-        <section id="services" className="section-light section-spacing section-connector">
-            <div className="section-container">
+        <section id="services" className="section-light section-spacing section-connector relative">
+            {/* Ambient decoration */}
+            <div className="ambient-orb w-80 h-80 -top-40 right-0 opacity-20" />
+
+            <div className="section-container relative z-10">
                 {/* Header */}
                 <motion.div
                     className="text-center mb-12"
@@ -40,10 +44,10 @@ export const SecretSauce = memo(function SecretSauce() {
                     </p>
                 </motion.div>
 
-                {/* Cards Grid - White floating cards on Beige */}
+                {/* Cards Grid */}
                 <motion.div
                     className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-                    variants={staggerContainer}
+                    variants={staggerFast}
                     initial="hidden"
                     whileInView="visible"
                     viewport={viewportOnce}
@@ -54,9 +58,10 @@ export const SecretSauce = memo(function SecretSauce() {
                             <motion.div
                                 key={benefit.title}
                                 className="glass-card p-8"
-                                variants={fadeInUp}
+                                variants={cardReveal}
                                 whileHover={{ y: -8, scale: 1.02 }}
-                                transition={SPRING_HOVER}
+                                transition={SPRING_BOUNCY}
+                                style={{ transformOrigin: "center bottom" }}
                             >
                                 {/* Icon in subtle gold circle */}
                                 <div className="icon-circle mb-6">

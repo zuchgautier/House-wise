@@ -7,10 +7,10 @@ import Link from "next/link";
 import { TrustBadges } from "@/components/ui/TrustBadges";
 
 import {
-    staggerContainer,
-    fadeInUp,
-    SPRING_HOVER,
-    LUXURY_EASE,
+    staggerSlow,
+    blurReveal,
+    SPRING_BOUNCY,
+    EASE_OUT_EXPO,
 } from "@/lib/animations";
 
 const rotatingPhrases = [
@@ -25,7 +25,7 @@ const TextRotator = memo(function TextRotator() {
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentIndex((prev) => (prev + 1) % rotatingPhrases.length);
-        }, 2000);
+        }, 2500);
         return () => clearInterval(interval);
     }, []);
 
@@ -36,10 +36,10 @@ const TextRotator = memo(function TextRotator() {
                     key={currentIndex}
                     className="text-2xl md:text-3xl lg:text-4xl font-normal text-center px-4"
                     style={{ color: "#FFFFFF" }}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.5, ease: LUXURY_EASE }}
+                    initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
+                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                    exit={{ opacity: 0, y: -20, filter: "blur(8px)" }}
+                    transition={{ duration: 0.6, ease: EASE_OUT_EXPO }}
                 >
                     {rotatingPhrases[currentIndex]}
                 </motion.h2>
@@ -57,6 +57,8 @@ export const Hero = memo(function Hero() {
 
     const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
     const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+    const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.95]);
+    const blur = useTransform(scrollYProgress, [0, 0.5], [0, 6]);
 
     const handleScrollDown = () => {
         const target = document.getElementById("services");
@@ -71,89 +73,101 @@ export const Hero = memo(function Hero() {
             id="hero"
             className="section-hero min-h-screen flex items-center justify-center pt-20 pb-12 md:pt-24 md:pb-16 px-5 md:px-0"
         >
+            {/* Ambient gold orbs */}
+            <div className="ambient-orb w-96 h-96 -top-48 -right-48 opacity-30" />
+            <div className="ambient-orb w-64 h-64 bottom-20 -left-32 opacity-20" style={{ animationDelay: "2s" }} />
+
             {/* Content */}
             <motion.div
                 className="section-container relative z-10 text-center gpu-layer"
-                style={{ y, opacity }}
+                style={{
+                    y,
+                    opacity,
+                    scale,
+                }}
             >
                 <motion.div
-                    className="max-w-4xl mx-auto"
-                    variants={staggerContainer}
-                    initial="hidden"
-                    animate="visible"
+                    style={{ filter: useTransform(blur, (v) => `blur(${v}px)`) }}
                 >
-                    {/* Subtle Badge - Above H1 */}
-                    <motion.div variants={fadeInUp} className="mb-8">
-                        <span className="badge-subtle">
-                            Conciergerie Premium à Casablanca
-                        </span>
-                    </motion.div>
-
-                    {/* Headline */}
-                    <motion.h1 variants={fadeInUp} className="text-display mb-8">
-                        <span style={{ color: "#FFFFFF" }}>Votre bien,{" "}</span>
-                        <span className="block" style={{ color: "#FFFFFF" }}>
-                            notre expertise,
-                        </span>
-                        <span className="text-gradient">votre liberté.</span>
-                    </motion.h1>
-
-                    {/* Subtitle */}
-                    <motion.p
-                        variants={fadeInUp}
-                        className="text-base md:text-xl text-blanc/70 max-w-2xl mx-auto mb-6 leading-relaxed font-light px-2"
-                    >
-                        Déléguez la gestion de votre bien à des experts. Maximisez vos
-                        revenus locatifs sans aucun effort.
-                    </motion.p>
-
-                    {/* Geographic Expertise */}
-                    <motion.p
-                        variants={fadeInUp}
-                        className="text-sm text-dore/80 mb-12 font-medium tracking-wide"
-                    >
-                        Expertise dédiée : Gauthier, Racine, Anfa, Ain Diab et Californie
-                    </motion.p>
-
-                    {/* CTAs */}
                     <motion.div
-                        variants={fadeInUp}
-                        className="flex flex-col sm:flex-row items-center justify-center gap-4"
+                        className="max-w-4xl mx-auto"
+                        variants={staggerSlow}
+                        initial="hidden"
+                        animate="visible"
                     >
-                        <Link href="#contact">
-                            <motion.button
-                                className="btn-gold"
-                                whileHover={{ scale: 1.03 }}
-                                whileTap={{ scale: 0.98 }}
-                                transition={SPRING_HOVER}
-                            >
-                                Estimer mes revenus
-                                <ArrowRight className="w-4 h-4" />
-                            </motion.button>
-                        </Link>
-                        <Link href="#packs">
-                            <motion.button
-                                className="btn-outline"
-                                whileHover={{ scale: 1.03 }}
-                                whileTap={{ scale: 0.98 }}
-                                transition={SPRING_HOVER}
-                            >
-                                Découvrir nos packs
-                            </motion.button>
-                        </Link>
-                    </motion.div>
+                        {/* Subtle Badge - Above H1 */}
+                        <motion.div variants={blurReveal} className="mb-8">
+                            <span className="badge-subtle">
+                                Conciergerie Premium à Casablanca
+                            </span>
+                        </motion.div>
 
-                    {/* Text Rotator */}
-                    <motion.div
-                        variants={fadeInUp}
-                        className="mt-14 pt-8 border-t border-blanc/10"
-                    >
-                        <TextRotator />
-                    </motion.div>
+                        {/* Headline */}
+                        <motion.h1 variants={blurReveal} className="text-display mb-8">
+                            <span style={{ color: "#FFFFFF" }}>Votre bien,{" "}</span>
+                            <span className="block" style={{ color: "#FFFFFF" }}>
+                                notre expertise,
+                            </span>
+                            <span className="text-gradient">votre liberté.</span>
+                        </motion.h1>
 
-                    {/* Trust Badges */}
-                    <motion.div variants={fadeInUp} className="mt-8">
-                        <TrustBadges />
+                        {/* Subtitle */}
+                        <motion.p
+                            variants={blurReveal}
+                            className="text-base md:text-xl text-blanc/70 max-w-2xl mx-auto mb-6 leading-relaxed font-light px-2"
+                        >
+                            Déléguez la gestion de votre bien à des experts. Maximisez vos
+                            revenus locatifs sans aucun effort.
+                        </motion.p>
+
+                        {/* Geographic Expertise */}
+                        <motion.p
+                            variants={blurReveal}
+                            className="text-sm text-dore/80 mb-12 font-medium tracking-wide"
+                        >
+                            Expertise dédiée : Gauthier, Racine, Anfa, Ain Diab et Californie
+                        </motion.p>
+
+                        {/* CTAs */}
+                        <motion.div
+                            variants={blurReveal}
+                            className="flex flex-col sm:flex-row items-center justify-center gap-4"
+                        >
+                            <Link href="#contact">
+                                <motion.button
+                                    className="btn-gold"
+                                    whileHover={{ scale: 1.05, y: -3 }}
+                                    whileTap={{ scale: 0.97 }}
+                                    transition={SPRING_BOUNCY}
+                                >
+                                    Estimer mes revenus
+                                    <ArrowRight className="w-4 h-4" />
+                                </motion.button>
+                            </Link>
+                            <Link href="#packs">
+                                <motion.button
+                                    className="btn-outline"
+                                    whileHover={{ scale: 1.05, y: -2 }}
+                                    whileTap={{ scale: 0.97 }}
+                                    transition={SPRING_BOUNCY}
+                                >
+                                    Découvrir nos packs
+                                </motion.button>
+                            </Link>
+                        </motion.div>
+
+                        {/* Text Rotator */}
+                        <motion.div
+                            variants={blurReveal}
+                            className="mt-14 pt-8 border-t border-blanc/10"
+                        >
+                            <TextRotator />
+                        </motion.div>
+
+                        {/* Trust Badges */}
+                        <motion.div variants={blurReveal} className="mt-8">
+                            <TrustBadges />
+                        </motion.div>
                     </motion.div>
                 </motion.div>
             </motion.div>
@@ -161,9 +175,9 @@ export const Hero = memo(function Hero() {
             {/* Scroll Indicator */}
             <motion.div
                 className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1.5 }}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 2, duration: 0.8, ease: EASE_OUT_EXPO }}
                 onClick={handleScrollDown}
             >
                 <span className="text-blanc/40 text-xs font-medium tracking-wider uppercase">
@@ -171,7 +185,7 @@ export const Hero = memo(function Hero() {
                 </span>
                 <motion.div
                     animate={{ y: [0, 8, 0] }}
-                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                 >
                     <ChevronDown className="w-5 h-5 text-blanc/50" />
                 </motion.div>

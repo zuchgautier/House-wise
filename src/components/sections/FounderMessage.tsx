@@ -23,11 +23,12 @@ const ParallaxCard = memo(function ParallaxCard({
     const x = useMotionValue(0);
     const y = useMotionValue(0);
 
-    const mouseX = useSpring(x, { stiffness: 500, damping: 100 });
-    const mouseY = useSpring(y, { stiffness: 500, damping: 100 });
+    const mouseX = useSpring(x, { stiffness: 300, damping: 60 });
+    const mouseY = useSpring(y, { stiffness: 300, damping: 60 });
 
     const rotateX = useTransform(mouseY, [-0.5, 0.5], ["7deg", "-7deg"]);
     const rotateY = useTransform(mouseX, [-0.5, 0.5], ["-7deg", "7deg"]);
+    const glare = useTransform(mouseX, [-0.5, 0.5], [0, 1]);
 
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
         if (!ref.current) return;
@@ -59,9 +60,17 @@ const ParallaxCard = memo(function ParallaxCard({
         >
             <div
                 style={{ transform: "translateZ(50px)", transformStyle: "preserve-3d" }}
-                className="h-full w-full"
+                className="h-full w-full relative"
             >
                 {children}
+                {/* Glare overlay */}
+                <motion.div
+                    className="absolute inset-0 rounded-2xl pointer-events-none z-10"
+                    style={{
+                        background: "linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.12) 50%, transparent 60%)",
+                        opacity: glare,
+                    }}
+                />
             </div>
         </motion.div>
     );
@@ -69,8 +78,11 @@ const ParallaxCard = memo(function ParallaxCard({
 
 export const FounderMessage = memo(function FounderMessage() {
     return (
-        <section className="section-light section-spacing">
-            <div className="section-container">
+        <section className="section-light section-spacing relative">
+            {/* Ambient decoration */}
+            <div className="ambient-orb w-72 h-72 -bottom-36 left-0 opacity-15" />
+
+            <div className="section-container relative z-10">
                 <motion.div
                     className="glass-card p-8 md:p-12 lg:p-16"
                     variants={fadeInUp}
@@ -126,7 +138,7 @@ export const FounderMessage = memo(function FounderMessage() {
                                 </div>
                             </ParallaxCard>
 
-                            {/* Decorative Element - Shared */}
+                            {/* Decorative Element */}
                             <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-gradient-to-tr from-dore/20 to-transparent rounded-full blur-3xl -z-10" />
                         </motion.div>
 
